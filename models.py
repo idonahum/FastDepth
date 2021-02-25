@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
-import math
+import math,time
 
 
 def DeconvBlock(in_channels,out_channels,kernel_size):
@@ -19,6 +19,12 @@ def ConvBlock(in_channels,out_channels,kernel_size,stride,padding):
             nn.ReLU(inplace=True),
         )
 
+def ConvReLU6Block(in_channels,out_channels,kernel_size,stride,padding):
+  return nn.Sequential(
+            nn.Conv2d(in_channels,out_channels,kernel_size,stride=stride,padding=padding,bias=False),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU6(inplace=True),
+        )
 def DWConvBlock(in_channels,out_channels,kernel_size,stride,padding = None):
   if padding == None:
     padding = (kernel_size - 1) // 2
@@ -26,6 +32,15 @@ def DWConvBlock(in_channels,out_channels,kernel_size,stride,padding = None):
             nn.Conv2d(in_channels,out_channels,kernel_size,stride=stride,padding=padding,bias=False,groups=in_channels),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
+        )
+
+def DWConvReLU6Block(in_channels,out_channels,kernel_size,stride,padding = None):
+  if padding == None:
+    padding = (kernel_size - 1) // 2
+  return nn.Sequential(
+            nn.Conv2d(in_channels,out_channels,kernel_size,stride=stride,padding=padding,bias=False,groups=in_channels),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU6(inplace=True),
         )
 def weights_init(m):
     # Initialize kernel weights with Gaussian distributions
@@ -42,25 +57,25 @@ def weights_init(m):
     elif isinstance(m, nn.BatchNorm2d):
         m.weight.data.fill_(1)
         m.bias.data.zero_()
-
+        
 
 class MobileNet_Encoder(nn.Module):
     def __init__(self):
       super(MobileNet_Encoder, self).__init__()
-      self.enc_layer1 = ConvBlock(3,32,3,2,1)
-      self.enc_layer2= nn.Sequential(DWConvBlock(32,32,3,1,1),ConvBlock(32,64,1,1,0))
-      self.enc_layer3= nn.Sequential(DWConvBlock(64,64,3,2,1),ConvBlock(64,128,1,1,0))
-      self.enc_layer4= nn.Sequential(DWConvBlock(128,128,3,1,1),ConvBlock(128,128,1,1,0))
-      self.enc_layer5 = nn.Sequential(DWConvBlock(128,128,3,2,1),ConvBlock(128,256,1,1,0))
-      self.enc_layer6 = nn.Sequential(DWConvBlock(256,256,3,1,1),ConvBlock(256,256,1,1,0))
-      self.enc_layer7 = nn.Sequential(DWConvBlock(256,256,3,2,1),ConvBlock(256,512,1,1,0))
-      self.enc_layer8 = nn.Sequential(DWConvBlock(512,512,3,1,1),ConvBlock(512,512,1,1,0))
-      self.enc_layer9 = nn.Sequential(DWConvBlock(512,512,3,1,1),ConvBlock(512,512,1,1,0))
-      self.enc_layer10 = nn.Sequential(DWConvBlock(512,512,3,1,1),ConvBlock(512,512,1,1,0))
-      self.enc_layer11 = nn.Sequential(DWConvBlock(512,512,3,1,1),ConvBlock(512,512,1,1,0))
-      self.enc_layer12 = nn.Sequential(DWConvBlock(512,512,3,1,1),ConvBlock(512,512,1,1,0))
-      self.enc_layer13 =  nn.Sequential(DWConvBlock(512,512,3,2,1),ConvBlock(512,1024,1,1,0))
-      self.enc_layer14 =  nn.Sequential(DWConvBlock(1024,1024,3,1,1),ConvBlock(1024,1024,1,1,0))
+      self.enc_layer1 = ConvReLU6Block(3,32,3,2,1)
+      self.enc_layer2= nn.Sequential(DWConvReLU6Block(32,32,3,1,1),ConvReLU6Block(32,64,1,1,0))
+      self.enc_layer3= nn.Sequential(DWConvReLU6Block(64,64,3,2,1),ConvReLU6Block(64,128,1,1,0))
+      self.enc_layer4= nn.Sequential(DWConvReLU6Block(128,128,3,1,1),ConvReLU6Block(128,128,1,1,0))
+      self.enc_layer5 = nn.Sequential(DWConvReLU6Block(128,128,3,2,1),ConvReLU6Block(128,256,1,1,0))
+      self.enc_layer6 = nn.Sequential(DWConvReLU6Block(256,256,3,1,1),ConvReLU6Block(256,256,1,1,0))
+      self.enc_layer7 = nn.Sequential(DWConvReLU6Block(256,256,3,2,1),ConvReLU6Block(256,512,1,1,0))
+      self.enc_layer8 = nn.Sequential(DWConvReLU6Block(512,512,3,1,1),ConvReLU6Block(512,512,1,1,0))
+      self.enc_layer9 = nn.Sequential(DWConvReLU6Block(512,512,3,1,1),ConvReLU6Block(512,512,1,1,0))
+      self.enc_layer10 = nn.Sequential(DWConvReLU6Block(512,512,3,1,1),ConvReLU6Block(512,512,1,1,0))
+      self.enc_layer11 = nn.Sequential(DWConvReLU6Block(512,512,3,1,1),ConvReLU6Block(512,512,1,1,0))
+      self.enc_layer12 = nn.Sequential(DWConvReLU6Block(512,512,3,1,1),ConvReLU6Block(512,512,1,1,0))
+      self.enc_layer13 =  nn.Sequential(DWConvReLU6Block(512,512,3,2,1),ConvReLU6Block(512,1024,1,1,0))
+      self.enc_layer14 =  nn.Sequential(DWConvReLU6Block(1024,1024,3,1,1),ConvReLU6Block(1024,1024,1,1,0))
       self.enc_layer15= nn.AvgPool2d(7)
       self.enc_output = nn.Linear(1024, 1000)
 
@@ -81,7 +96,7 @@ class MobileNet_Encoder(nn.Module):
       x=self.enc_layer14(x)
       x=self.enc_layer15(x)
       return self.enc_output(x)
-
+    
 class InvertedResidualBlock(nn.Module):
     def __init__(self, inp, oup, stride, expand_ratio):
         super(InvertedResidualBlock, self).__init__()
@@ -126,7 +141,7 @@ class InvertedResidualBlock(nn.Module):
 class MobileNetV2_Encoder(nn.Module):
     def __init__(self):
         super(MobileNetV2_Encoder, self).__init__()
-        self.enc_layer0 = ConvBlock(3,32,3,2,1)
+        self.enc_layer0 = ConvReLU6Block(3,32,3,2,1)
         self.enc_layer1= InvertedResidualBlock(32,16,1,1)
         self.enc_layer2= InvertedResidualBlock(16,24,2,6)
         self.enc_layer3= InvertedResidualBlock(24,24,1,6) 
@@ -144,7 +159,7 @@ class MobileNetV2_Encoder(nn.Module):
         self.enc_layer15 = InvertedResidualBlock(160,160,1,6)
         self.enc_layer16 = InvertedResidualBlock(160,160,1,6)
         self.enc_layer17 = InvertedResidualBlock(160,320,1,6)
-        self.enc_layer18 = ConvBlock(320,1280,1,1,0)
+        self.enc_layer18 = ConvReLU6Block(320,1280,1,1,0)
         self.enc_layer19 = nn.AvgPool2d(7)
         self.enc_output = nn.Linear(1280,1000)
 
@@ -270,7 +285,6 @@ class FastDepth(nn.Module):
     x= F.interpolate(self.decoder.conv4(x), scale_factor=2, mode='nearest') + layer1
     x= F.interpolate(self.decoder.conv5(x), scale_factor=2, mode='nearest')
     return self.decoder.output(x)
-
 
 
 class FastDepthV2(nn.Module):
