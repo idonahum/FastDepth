@@ -66,7 +66,7 @@ def train(model,optimizer,train_loader,val_loader,criteria=loss_func.DepthLoss()
         else:
             print(f'********{datetime.datetime.now().time().replace(microsecond=0)} Finish Epoch #{epoch+1} Total Loss:{total_loss/len(train_loader):.4f}. Saving checkpoint..')
             torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict': model.state_dict(),'optimizer_state_dict':
-                        optimizer.state_dict(),'loss': total_loss/len(train_loader),'train_set':args.train_set,'val_set':args.val_set,'args':args},f'{args.weights_dir}/{args.criterion}/FastDepth_{epoch}.pth')
+                        optimizer.state_dict(),'loss': total_loss/len(train_loader),'train_set':args.train_set,'val_set':args.val_set,'args':args},f'{args.weights_dir}/{args.backbone}/{args.criterion}/FastDepth_{epoch}.pth')
             print(f'********{datetime.datetime.now().time().replace(microsecond=0)} Detour, running validation..')
             val_loss, delta1_acc , timer,rmse = evaluate_model(model,val_loader)
             writer.add_scalars(f'Logs/Loss',{'Train': total_loss/len(train_loader),'Validation Loss':val_loss}, epoch+1)
@@ -81,9 +81,9 @@ def train(model,optimizer,train_loader,val_loader,criteria=loss_func.DepthLoss()
             model.train()
             epoch+=1
     torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict': model.state_dict(),'optimizer_state_dict':
-                        optimizer.state_dict(),'loss': total_loss/len(train_loader),'train_set':args.train_set,'val_set':args.val_set,'args':args}, f'{args.weights_dir}/{args.criterion}/FastDepth_Final.pth')
+                        optimizer.state_dict(),'loss': total_loss/len(train_loader),'train_set':args.train_set,'val_set':args.val_set,'args':args}, f'{args.weights_dir}/{args.backbone}/{args.criterion}/FastDepth_Final.pth')
 
-
+                               
 def evaluate_model(model,test_loader,criterion=loss_func.DepthLoss(),save_pic=True):
     if args.gpu and torch.cuda.is_available():
         model.cuda()
@@ -100,6 +100,8 @@ def evaluate_model(model,test_loader,criterion=loss_func.DepthLoss(),save_pic=Tr
             time1 = time.time()
             pred = model(input)
             time1 = time.time() - time1
+            
+            avg_enctime+= encoder_time
             test_loss += criterion(args.criterion,pred,target).item()
             
             valid_mask = ((target>0) + (pred>0)) > 0
@@ -118,8 +120,8 @@ def evaluate_model(model,test_loader,criterion=loss_func.DepthLoss(),save_pic=Tr
     if save_pic:
         utils.save_best_samples(imgs_dict)
     return test_loss/len(test_loader), delta1/len(test_loader),timer/len(test_loader),test_acc_L2/len(test_loader)
-
-
+                               
+    
 if args.mode == 'train':
     writer = SummaryWriter(f'{args.tensorboard_dir}/{args.criterion}')
     if args.resume != None:
@@ -157,10 +159,10 @@ if args.mode == 'train':
         optimizer = optim.SGD(model.parameters(), lr = args.learning_rate ,weight_decay=args.weight_decay)
         print('Model created')
         train(model,optimizer,train_loader,val_loader)
-
+        
 elif args.mode == 'eval':
     _ ,val_loader = create_data_loaders(args)
-    model = FastDepth()
+    model = FastDepthV2()
     model, args.criterion = load_pretrained_fastdepth(model,os.path.join(args.weights_dir,args.pretrained))
     
     test_loss, delta1_acc,timer,rmse = evaluate_model(model,val_loader,save_pic=True)
