@@ -100,8 +100,7 @@ def evaluate_model(model,test_loader,criterion=loss_func.DepthLoss(),save_pic=Tr
             time1 = time.time()
             pred = model(input)
             time1 = time.time() - time1
-            
-            avg_enctime+= encoder_time
+
             test_loss += criterion(args.criterion,pred,target).item()
             
             valid_mask = ((target>0) + (pred>0)) > 0
