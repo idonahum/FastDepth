@@ -8,10 +8,10 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 ## Contents
 0. [Requirements](#requirements)
 0. [Trained Models](#trained-models)
-0. [Evaluation](#evaluation)
-0. [Deployment](#deployment)
-0. [Results](#results)
-0. [Citation](#citation)
+1. [Training](#training)
+2. [Evaluation](#evaluation)
+4. [Results](#results)
+5. [Reference](#reference)
 
 ## Requirements
 - Install [PyTorch](https://pytorch.org/)
@@ -42,9 +42,11 @@ to train a new model. run the following command:
 python3 main.py -mode train -backbone [encoder_type] --criterion [criterion] --gpu True
 ```
 change encoder_type to one of the following: [mobilenet, mobilenetv2]
+
 change the criterion you would like to use for training, option are: [l1, l1gn, rmslegn]
 
 all checkpoints save to the path - FastDepth/Weights/[backbone]/[criterion]/
+
 please make sure that the directory exists before running train. for example, if you would like to use mobilenet as a backbone and l1 as a criterion, make sure that the directory 'FastDepth/Weights/mobilenet/l1 ' - exists.
 
 ### Pretrained MobileNet ###
