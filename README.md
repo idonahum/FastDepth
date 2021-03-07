@@ -37,10 +37,10 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 	```
 downloading and unziping takes a while, please be patient.
 ## Trained Models ##
-  The following trained models can be found at 
+  The following trained models can be found at 'Weights' directory.
   - MobileNet-NNConv5(depthwise) with additive skip connections. Loss function: L1
   - MobileNetV2-NNConv5(depthwise) with additive skip connections. Loss function: L1
-  - MobileNet-NNConv5(depthwise) with additive skip connections. Loss function: RMSLE+ Gradient+ Normal
+  - MobileNet-NNConv5(depthwise) with additive skip connections. Loss function: RMSLE+ Gradient+ Normal - this one turns out to be heavy, thus, download is available here:[link](https://drive.google.com/file/d/1HXClRN7_nQvfTQahpOIUPGc-RZhRluhX/view?usp=sharing)
   - MobileNetV2-NNConv5(depthwise) with additive skip connections. Loss function: RMSLE+ Gradient+ Normal
   - MobileNet-NNConv5(depthwise) with additive skip connections. Loss function: L1+ Gradient+ Normal
   - MobileNetV2-NNConv5(depthwise), with additive skip connections. Loss function: L1+ Gradient+ Normal
