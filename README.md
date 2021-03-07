@@ -61,6 +61,10 @@ all checkpoints save to the path - FastDepth/Weights/[backbone]/[criterion]/
 
 please make sure that the directory exists before running train. for example, if you would like to use mobilenet as a backbone and l1 as a criterion, make sure that the directory 'FastDepth/Weights/mobilenet/l1 ' - exists.
 
+if you would like to resume your training, run the following code:
+```bash
+python3 main.py -mode train -backbone [encoder_type] --criterion [criterion] --gpu True --resume [path_to_checkpoint]
+```
 ### Pretrained MobileNet ###
 
 The model file for the pretrained MobileNet used in our model definition can be downloaded from [http://datasets.lids.mit.edu/fastdepth/imagenet/](http://datasets.lids.mit.edu/fastdepth/imagenet/).
