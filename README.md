@@ -8,17 +8,17 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 ## Contents
 0. [Requirements](#requirements)
 0. [Trained Models](#trained-models)
-1. [Training](#training)
-2. [Evaluation](#evaluation)
-4. [Results](#results)
-5. [Reference](#reference)
+0. [Training](#training)
+0. [Evaluation](#evaluation)
+0. [Results](#results)
+0. [Reference](#reference)
 
 ## Requirements
 ## Setup
 
  - Clone repository:
     ```bash
-    git clone https://github.com/TUI-NICR/ESANet.git
+    git clone https://github.com/idonahum/FastDepth.git
    
     cd /path/to/this/repository
     ```
