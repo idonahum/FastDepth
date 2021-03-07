@@ -1,6 +1,5 @@
 def parse_args():
     loss_functions = ['l1','l2','DepthLoss']
-    predicts = ['depth','segmentation']
     backbone_model = ['mobilenet','mobilenetv2']
     import argparse
     parser = argparse.ArgumentParser(description='FastDepth')
@@ -9,7 +8,7 @@ def parse_args():
     parser.add_argument('--bsize', default=8, type=int,help='Mini batch size.')
     parser.add_argument('-j','--workers', default=16, type=int,help='Number of workers for data loading.')
     parser.add_argument('-p','--print-freq', default=100, type=int,help='print frequency during training. (in batches).')
-    parser.add_argument('-e','--epochs', default=20, type=int,help='Number of epochs, typically passes through the entire dataset.')
+    parser.add_argument('-e','--epochs', default=500, type=int,help='Number of epochs, typically passes through the entire dataset.')
     parser.add_argument('-s','--samples', default=None, type=int,help='Maximum number of data samples to write or load.')
     parser.add_argument('-lr','--learning_rate',default = 0.01, type=float,help='Learning rate value ')	
     parser.add_argument('--momentum', default=0.9, type=float,help='Momentum value')
