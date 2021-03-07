@@ -48,7 +48,6 @@ def save_best_samples(imgs_dict):
         pred.append(i[1])
         depth.append(i[2])
     
-    print(indices)    
     rgb = torch.stack(rgb).squeeze(1)
     pred = torch.stack(pred).squeeze(1)
     depth = torch.stack(depth).squeeze(1)
