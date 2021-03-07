@@ -1,9 +1,13 @@
 import collections
 import argparse
 import torchvision
+from torchvision import transforms
 import torch
-
-
+import numpy as np
+import matplotlib.image
+import matplotlib.pyplot as plt
+import cv2
+plt.set_cmap("jet")
 def parse_args():
     loss_functions = ['l1','l2','rmsle','l1gn','l2gn','rmslegn']
     backbone_model = ['mobilenet','mobilenetv2']
@@ -43,16 +47,18 @@ def save_best_samples(imgs_dict):
         rgb.append(i[0])
         pred.append(i[1])
         depth.append(i[2])
-        
+    
+    print(indices)    
     rgb = torch.stack(rgb).squeeze(1)
     pred = torch.stack(pred).squeeze(1)
     depth = torch.stack(depth).squeeze(1)
-    
-    rgb_grid = torchvision.utils.make_grid(rgb[:4],normalize=True)
-    pred_grid = torchvision.utils.make_grid(pred[:4],normalize=True)
-    depth_grid = torchvision.utils.make_grid(depth[:4],normalize=True)
+    rgb_grid = torchvision.utils.make_grid(rgb[:8],normalize=True)
+    pred_grid = torchvision.utils.make_grid(pred[:8],normalize=True)
+    depth_grid = torchvision.utils.make_grid(depth[:8],normalize=True)
 
     samples = torch.stack((rgb_grid,pred_grid,depth_grid))
     samples_grid = torchvision.utils.make_grid(samples,nrow=1,normalize= True)
+    data_transforms = transforms.Compose([transforms.ToPILImage(),transforms.Grayscale(num_output_channels=1)])
+    gray_samples = data_transforms(samples_grid.cpu())
     torchvision.utils.save_image(samples_grid,'samples.png')
-
+    matplotlib.image.imsave('samplesjet.png', gray_samples)

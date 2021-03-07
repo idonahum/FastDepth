@@ -41,10 +41,12 @@ def train(model,optimizer,train_loader,val_loader,criteria=loss_func.DepthLoss()
             batch_count += 1
             if args.gpu and torch.cuda.is_available():
                 input, target = input.cuda(), target.cuda()
-            input, target = input.float(), target.float()
+            #input, target = input.float(), target.float()
             pred = model(input)
             loss = criteria(args.criterion,pred,target,epoch)
             optimizer.zero_grad()
+            #if np.isnan(loss.item()):
+                #continue
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
@@ -93,14 +95,15 @@ def evaluate_model(model,test_loader,criterion=loss_func.DepthLoss(),save_pic=Tr
         imgs_dict = {}
     with torch.no_grad():
         model.eval()
-        for input,target in test_loader:
+        for index, (input,target) in enumerate(test_loader):
             if args.gpu and torch.cuda.is_available():
                 input, target = input.cuda(), target.cuda()
             input, target = input.float(), target.float()
+            print(f'\r{index}/{len(test_loader)}', end='')
             time1 = time.time()
             pred = model(input)
             time1 = time.time() - time1
-
+            
             test_loss += criterion(args.criterion,pred,target).item()
             
             valid_mask = ((target>0) + (pred>0)) > 0
@@ -161,8 +164,11 @@ if args.mode == 'train':
         
 elif args.mode == 'eval':
     _ ,val_loader = create_data_loaders(args)
-    model = FastDepthV2()
-    model, args.criterion = load_pretrained_fastdepth(model,os.path.join(args.weights_dir,args.pretrained))
+    if args.backbone == 'mobilenet':
+        model = FastDepth()
+    else:
+        model = FastDepthV2()
+    model, _ = load_pretrained_fastdepth(model,os.path.join(args.weights_dir,args.pretrained))
     
     test_loss, delta1_acc,timer,rmse = evaluate_model(model,val_loader,save_pic=True)
     print('Evaluation loss:',test_loss)

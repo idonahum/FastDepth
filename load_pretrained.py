@@ -1,7 +1,6 @@
 import os
 import os.path
 import torch
-from models import FastDepth
 
 def load_pretrained_encoder(encoder,weights_path,backbone):
     if backbone == 'mobilenetv2':

@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-.. codeauthor:: Daniel Seichter <daniel.seichter@tu-ilmenau.de>
-
-See: https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html
-"""
 import argparse
 import io
 import os

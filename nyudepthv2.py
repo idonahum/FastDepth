@@ -73,11 +73,9 @@ class NYUDataset(Dataset):
     def train_transform(self, rgb, depth):
         s = np.random.uniform(1.0, 1.5) # random scaling
         depth_np = depth / s
-
         #converting to PIL.
         rgb_pil = Image.fromarray(rgb.copy())
         depth_pil = Image.fromarray(depth_np.copy())
-
         #resize1
         dim1 = (int(250*480/iheight),int(250*640/iheight))
         resize1 = transforms.Resize(dim1)

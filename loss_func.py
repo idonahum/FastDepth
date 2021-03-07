@@ -1,14 +1,16 @@
 import torch
 import torch.nn as nn
 import numpy as np
-
-
+import torch.nn.functional as F
+    
 class DepthLoss(nn.Module):
     def __init__(self):
         super(DepthLoss,self).__init__()
         self.mse = nn.MSELoss()
         self.grad_factor = 10.
         self.normal_factor = 1.
+
+       
     def forward(self,criterion,pred,target,epoch=0):
         if 'l1' in criterion:
             depth_loss = self.L1_imp_Loss(pred,target)
@@ -17,15 +19,15 @@ class DepthLoss(nn.Module):
         elif 'rmsle' in criterion:
             depth_loss = self.RMSLELoss(pred,target)
         if 'gn' in criterion:
-            grad_pred, grad_target = self.imgrad_yx(pred), self.imgrad_yx(target)
-            grad_loss = self.GradLoss(grad_pred,grad_target)*self.grad_factor * (epoch>3)
-            normal_loss = self.NormLoss(grad_pred,grad_target)*self.normal_factor * (epoch>7)
-            return depth_loss + grad_loss+ normal_loss
+            grad_target, grad_pred = self.imgrad_yx(target), self.imgrad_yx(pred)
+            grad_loss = self.GradLoss(grad_pred, grad_target)     * self.grad_factor
+            normal_loss = self.NormLoss(grad_pred, grad_target) * self.normal_factor
+            return depth_loss + grad_loss + normal_loss
         else:
             return depth_loss
     
     def GradLoss(self,grad_target,grad_pred):
-        return torch.sum( torch.mean( torch.abs(grad_target-grad_target) ) )
+        return torch.sum( torch.mean( torch.abs(grad_target-grad_pred) ) )
     
     def NormLoss(self, grad_target, grad_pred):
         prod = ( grad_pred[:,:,None,:] @ grad_target[:,:,:,None] ).squeeze(-1).squeeze(-1)
@@ -34,7 +36,9 @@ class DepthLoss(nn.Module):
         return 1 - torch.mean( prod/(pred_norm*target_norm) )
     
     def RMSLELoss(self, pred, target):
-        return torch.sqrt(self.mse(torch.log(pred + 1), torch.log(target + 1)))
+        return torch.sqrt(self.mse(torch.log(pred + 0.5), torch.log(target + 0.5)))
+ 
+        
     
     def L1_imp_Loss(self, pred, target):
         valid_mask = (target>0).detach()
@@ -73,4 +77,4 @@ class DepthLoss(nn.Module):
         conv2.weight = nn.Parameter(weight)
         grad_y = conv2(img)
         return grad_y, grad_x
-
+    
