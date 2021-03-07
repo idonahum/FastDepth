@@ -33,42 +33,49 @@ This directory contains the code for training, evaluating our FastDepth model fo
 
 ## Content
 There are subsection for different things to do:
-- [Evaluation](#evaluation): Reproduce results reported in our paper.
-- [Dataset Inference](#dataset-inference): Apply trained model to samples from dataset.
-- [Sample Inference](#sample-inference): Apply trained model to samples in [`./samples`](samples).
-- [Time Inference](#time-inference): Time inference on NVIDIA Jetson AGX Xavier using TensorRT.
-- [Training](#training): Train new ESANet model.
+- [Trained Models](#trained_models)
+- [Training](#training)
+- [Evaluation](#evaluation)
 
-## Evaluation
+## Trained Models ##
+  We provide one trained model based on mobilenetv1 as a backbone. [link for download]
 
-Examples: 
-- To evaluate our ESANet-R34-NBt1D trained on NYUv2, run:
-    ```bash
-    python eval.py \
-        --dataset nyuv2 \
-        --dataset_dir ./datasets/nyuv2 \
-        --ckpt_path ./trained_models/nyuv2/r34_NBt1D.pth
-     
-    # Camera: kv1 mIoU: 50.30
-    # All Cameras, mIoU: 50.30
-    ```
-- To evaluate our ESANet-R34-NBt1D trained on SUNRGB-D, run:
-    ```bash
-    python eval.py \
-        --dataset sunrgbd \
-        --dataset_dir ./datasets/sunrgbd \
-        --ckpt_path ./trained_models/sunrgbd/r34_NBt1D.pth
-    
-    # Camera: realsense mIoU: 32.42
-    # Camera: kv2 mIoU: 46.28
-    # Camera: kv1 mIoU: 53.39
-    # Camera: xtion mIoU: 41.93
-    # All Cameras, mIoU: 48.17
-    ```
+## Training ##
+to train a new model. run the following command:
+```bash
+python3 segmentation.py -mode train -backbone [encoder_type] --criterion ce --gpu True
+```
+change encoder_type to one of the following: [mobilenet, mobilenetv2]
 
 
+all checkpoints save to the path - FastDepth/Weights/[backbone]/[criterion]/
 
-### Training
+please make sure that the directory exists before running train. for example, if you would like to use mobilenet as a backbonen, make sure that the directory 'FastDepth/Weights/mobilenet/ce ' - exists.
+
+if you want to resume your training, run the following command:
+```bash
+python3 segmentation.py -mode train -backbone [encoder_type] --criterion ce --gpu True --resume [path_to_checkpoint]
+```
+### Pretrained MobileNet ###
+
+-The model file for the pretrained MobileNet used in our model definition can be downloaded from [http://datasets.lids.mit.edu/fastdepth/imagenet/](http://datasets.lids.mit.edu/fastdepth/imagenet/).
+when downloading it, make sure to put the tar file in 'Weights' directory
+-We provide in the main directory the pretrained mobilenetv2 model. (FastDepth/Weights)
+## Evaluation ##
+
+to evalaute an existing model, weights should be inside the 'Weights' directory. use the following command to run evaluation.
+
+```bash
+python3 segmentation.py -mode eval -backbone [mobilenet or mobilenetv2] --pretrained [model_weights_filename] --gpu True
+```
+
+The evaluation code will report model accuracy in terms of mIou[%].
+
+
+
+## Results
+
+All results avaiable here: [link to pdf]()
 
 ### Reference 
 our code for semantic segmentation data preprocessing is highly depends on the following paper.
