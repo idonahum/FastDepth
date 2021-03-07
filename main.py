@@ -169,7 +169,7 @@ elif args.mode == 'eval':
     else:
         model = FastDepthV2()
     model, _ = load_pretrained_fastdepth(model,os.path.join(args.weights_dir,args.pretrained))
-    
+    print("Evaluating...")
     test_loss, delta1_acc,timer,rmse = evaluate_model(model,val_loader,save_pic=True)
     print('Evaluation loss:',test_loss)
     print('Delta1 Accuarcy:',delta1_acc)
@@ -183,6 +183,7 @@ elif args.mode == 'create_TRT':
     model = FastDepth()
     model, args.criterion = load_pretrained_fastdepth(model,os.path.join(args.weights_dir,args.pretrained))
     print('creating TRT model')
+    print("Evaluating...")
     test_loss, delta1_acc,timer,rmse = evaluate_model(model,val_loader)
     x=torch.ones((1,3,224,224)).cuda()
     modeltrt= torch2trt(model,[x])
