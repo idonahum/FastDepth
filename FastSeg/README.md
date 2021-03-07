@@ -1,4 +1,4 @@
-This directory provides insturctions how to train, test models for semantic segmentation.
+
 
 
 This directory contains the code for training, evaluating our FastDepth model for image semantic segmentation. 
