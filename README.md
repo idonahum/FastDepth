@@ -57,7 +57,7 @@ change encoder_type to one of the following: [mobilenet, mobilenetv2]
 
 change the criterion you would like to use for training, option are: [l1, l1gn, rmslegn]
 
-all checkpoints save to the path - FastDepth/Weights/[backbone]/[criterion]/
+all checkpoints saved to the path - FastDepth/Weights/[backbone]/[criterion]/
 
 please make sure that the directory exists before running train. for example, if you would like to use mobilenet as a backbone and l1 as a criterion, make sure that the directory 'FastDepth/Weights/mobilenet/l1 ' - exists.
 
@@ -70,6 +70,7 @@ python3 main.py -mode train -backbone [encoder_type] --criterion [criterion] --g
 -The model file for the pretrained MobileNet used in our model definition can be downloaded from [http://datasets.lids.mit.edu/fastdepth/imagenet/](http://datasets.lids.mit.edu/fastdepth/imagenet/).
 when downloading it, make sure to put the tar file in 'Weights' directory
 -The model file for pretrained MobileNetV2 is available in 'Weights' directory.
+
 ## Evaluation ##
 
 to evalaute an existing model, weights should be inside the 'Weights' directory. use the following command to run evaluation.
@@ -83,6 +84,7 @@ The evaluation code will report model accuracy in terms of the delta1 metric as 
 
 ## Demo
 we provide a a colab demonstartion to visual our results for depth estimation.
+run FastDepthDemo.ipynb on your favorite framework, and follow the insturctions, make sure you are using GPU.
 
 ## Results
 
