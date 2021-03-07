@@ -77,7 +77,7 @@ The evaluation code will report model accuracy in terms of mIou[%].
 
 ## Results
 
-All results avaiable here: [link to pdf]()
+All results avaiable here: [link to pdf](https://drive.google.com/file/d/1Ws-wl00jpNyFQzDz-7gIQf0yQPuOQLur/view?usp=sharing)
 
 ### Reference 
 our code for semantic segmentation data preprocessing is highly depends on the following paper.
