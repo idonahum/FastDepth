@@ -1,7 +1,7 @@
 FastDepth
 ============================
 
-This repo is re-implentation of FastDepth project at MIT, we present up to date code, with extra trained models based on different backbones and different loss functions. we provide pretrained models. and insturctions how to train and evalute models. [FastDepth](http://fastdepth.mit.edu/) p
+This repo is re-implentation of FastDepth project at MIT, we present up to date code, with extra trained models based on different backbones and different loss functions. we provide pretrained models. and insturctions how to train and evalute models.
 
 
 
@@ -14,6 +14,14 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 5. [Reference](#reference)
 
 ## Requirements
+## Setup
+
+ - Clone repository:
+    ```bash
+    git clone https://github.com/TUI-NICR/ESANet.git
+   
+    cd /path/to/this/repository
+    ```
 - Install [PyTorch](https://pytorch.org/)
 - Install the [HDF5](https://en.wikipedia.org/wiki/Hierarchical_Data_Format) format libraries. Files in our pre-processed datasets are in HDF5 format.
 - Install Tensorboard [Tensorboard](https://pypi.org/project/tensorboard)
