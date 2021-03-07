@@ -64,7 +64,7 @@ def train_seg(model,optimizer,train_loader,val_loader,criteria=loss_func.DepthLo
                 interval_loss = 0
         else:
             print(f'********{datetime.datetime.now().time().replace(microsecond=0)} Finish Epoch #{epoch+1} Total Loss:{total_loss/len(train_loader):.4f}. Saving checkpoint..')
-            torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict':model.state_dict(),'train_set':args.train_set,'val_set':args.val_set,'args':args},f'{args.weights_dir}/{args.predict}/{args.criterion}/{args.criterion}_{epoch}.pth')
+            torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict':model.state_dict(),'train_set':args.train_set,'val_set':args.val_set,'args':args},f'{args.weights_dir}/{args.backbone}/{args.criterion}/FastSeg_{epoch}.pth')
             print(f'********{datetime.datetime.now().time().replace(microsecond=0)} Detour, running validation..')
             miou,_ = evaluate_seg(model,val_loader,criterion=criteria)
             if not best_miou or miou < best_miou:
@@ -73,7 +73,7 @@ def train_seg(model,optimizer,train_loader,val_loader,criteria=loss_func.DepthLo
                 print(f'********{datetime.datetime.now().time().replace(microsecond=0)} Best miou Update! best miou: {best_miou:.4f} , Epoch: {best_epoch}')
             model.train()
             epoch+=1
-    torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict': model.state_dict(),'train_set':args.train_set,'val_set':args.val_set,'args':args}, f'{args.weights_dir}{args.predict}/{args.criterion}/{args.criterion}_Final.pth')
+    torch.save({'epoch': epoch,'batch':batch_count,'model_state_dict': model.state_dict(),'train_set':args.train_set,'val_set':args.val_set,'args':args}, f'{args.weights_dir}/{args.backbone}/{args.criterion}/FastSeg_Final.pth')
 
                         
 def evaluate_seg(model,test_loader,criterion):
@@ -108,8 +108,7 @@ def evaluate_seg(model,test_loader,criterion):
                    
                     time1 = time.time() - time1
                     
-                    #loss = criteria(predict,target_scales)
-                    #test_loss += loss
+            
                     timer+= time1
                     pred = F.interpolate(pred, (image_h, image_w),
                                         mode='bilinear',
@@ -165,7 +164,7 @@ else:
     model_name = FastSeg()
     
 if args.mode == 'train':
-    writer = SummaryWriter(f'{args.tensorboard_dir}/{args.predict}/{args.criterion}')
+    writer = SummaryWriter(f'{args.tensorboard_dir}/{args.backbone}/{args.criterion}')
     if args.resume != None:
         resume_path = os.path.join(args.weights_dir,args.resume)
         assert os.path.isfile(resume_path), "No checkpoint found. abort.."
