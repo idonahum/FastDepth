@@ -17,8 +17,3 @@ pip install -r ./requirements.txt
 # cd to this directory
 python prepare_dataset.py ../../../datasets/nyuv2seg
 ```
-
-## Use dataset
-```python
-# see ../../src/prepare_data.py
-```
