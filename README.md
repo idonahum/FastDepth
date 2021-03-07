@@ -3,6 +3,8 @@ FastDepth
 
 This repo is re-implentation of FastDepth project at MIT, we present up to date code, with extra trained models based on different backbones and different loss functions. we provide pretrained models. and insturctions how to train and evalute models.
 
+we also provide demo for depth estimation, and code for semantic segmentation that is available in FastSeg directory.
+
 
 
 ## Contents
@@ -10,6 +12,7 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 0. [Trained Models](#trained-models)
 0. [Training](#training)
 0. [Evaluation](#evaluation)
+0. [Demo](#demo)
 0. [Results](#results)
 0. [Reference](#reference)
 
@@ -73,7 +76,8 @@ change criterion to one of the following options: [l1, l1gn, rmslegn]
 
 The evaluation code will report model accuracy in terms of the delta1 metric as well as RMSE metric.
 
-
+## Demo
+we provie a a colab demonstartion to visual our results for depth estimation.
 
 ## Results
 
