@@ -60,7 +60,7 @@ python3 segmentation.py -mode train -backbone [encoder_type] --criterion ce --gp
 
 -The model file for the pretrained MobileNet used in our model definition can be downloaded from [http://datasets.lids.mit.edu/fastdepth/imagenet/](http://datasets.lids.mit.edu/fastdepth/imagenet/).
 when downloading it, make sure to put the tar file in 'Weights' directory
--We provide in the main directory the pretrained mobilenetv2 model. (FastDepth/Weights)
+-We provide in 'Weights' directory, the pretrained weights for MobilNetV2.
 ## Evaluation ##
 
 to evalaute an existing model, weights should be inside the 'Weights' directory. use the following command to run evaluation.
