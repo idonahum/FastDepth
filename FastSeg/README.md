@@ -27,8 +27,6 @@ This directory contains the code for training, evaluating our FastDepth model fo
     The folder [`preprocess/datasets`](preprocess/datasets) contains the code to prepare
     NYUv2 for training and evaluation. 
     Please follow the instructions given for the respective dataset and store 
-
-4. Pretrained models (evaluation):  
   
 
 ## Content
@@ -38,12 +36,13 @@ There are subsection for different things to do:
 - [Evaluation](#evaluation)
 
 ## Trained Models ##
-  We provide one trained model based on mobilenetv1 as a backbone. [link for download]
+  We provide one trained model based on mobilenetv1 as a backbone.
+  - MobileNet-NNConv5(depthwise) - filename FastSeg_l1_mobilenet.pth and it is available in Weights directory. 
 
 ## Training ##
 to train a new model. run the following command:
 ```bash
-python3 segmentation.py -mode train -backbone [encoder_type] --criterion ce --gpu True
+python3 segmentation.py -mode train -backbone [encoder_type] --gpu True
 ```
 change encoder_type to one of the following: [mobilenet, mobilenetv2]
 
@@ -54,7 +53,7 @@ please make sure that the directory exists before running train. for example, if
 
 if you want to resume your training, run the following command:
 ```bash
-python3 segmentation.py -mode train -backbone [encoder_type] --criterion ce --gpu True --resume [path_to_checkpoint]
+python3 segmentation.py -mode train -backbone [encoder_type] --gpu True --resume [path_to_checkpoint]
 ```
 ### Pretrained MobileNet ###
 
@@ -68,7 +67,10 @@ to evalaute an existing model, weights should be inside the 'Weights' directory.
 ```bash
 python3 segmentation.py -mode eval -backbone [mobilenet or mobilenetv2] --pretrained [model_weights_filename] --gpu True
 ```
-
+if you would like to use our pretrained weights:
+```bash
+python3 segmentation.py -mode eval -backbone mobilenet --pretrained FastSeg_l1_mobilenet.pth --gpu True
+```
 The evaluation code will report model accuracy in terms of mIou[%].
 
 
@@ -79,6 +81,7 @@ All results avaiable here: [link to pdf]()
 
 ### Reference 
 our code for semantic segmentation data preprocessing is highly depends on the following paper.
+
 >Seichter, D., Köhler, M., Lewandowski, B., Wengefeld T., Gross, H.-M.
 *Efficient RGB-D Semantic Segmentation for Indoor Scene Analysis*
 arXiv preprint arXiv:2011.06961 (2020).
