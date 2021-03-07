@@ -16,6 +16,7 @@ This repo is re-implentation of FastDepth project at MIT, we present up to date 
 ## Requirements
 - Install [PyTorch](https://pytorch.org/)
 - Install the [HDF5](https://en.wikipedia.org/wiki/Hierarchical_Data_Format) format libraries. Files in our pre-processed datasets are in HDF5 format.
+- Install Tensorboard [Tensorboard](https://pypi.org/project/tensorboard)
   ```bash
   sudo apt-get update
   sudo apt-get install -y libhdf5-serial-dev hdf5-tools
@@ -52,7 +53,7 @@ please make sure that the directory exists before running train. for example, if
 ### Pretrained MobileNet ###
 
 The model file for the pretrained MobileNet used in our model definition can be downloaded from [http://datasets.lids.mit.edu/fastdepth/imagenet/](http://datasets.lids.mit.edu/fastdepth/imagenet/).
-
+when downloading it, make sure to put the tar file in 'Weights' directory
 ## Evaluation ##
 
 to evalaute an existing model, weights should be inside the 'Weights' directory. use the following command to run evaluation.
@@ -68,7 +69,7 @@ The evaluation code will report model accuracy in terms of the delta1 metric as 
 
 ## Results
 
-All results avaiable here: [link to pdf]
+All results avaiable here: [link to pdf]()
 
 ## Referece
 
