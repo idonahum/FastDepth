@@ -9,9 +9,9 @@ This directory contains the code for training, evaluating our FastDepth model fo
 
 1. Clone repository:
     ```bash
-    git clone https://github.com/TUI-NICR/ESANet.git
+    git clone https://github.com/idonahum/FastDepth.git
    
-    cd /path/to/this/repository
+    cd /path/to/this/directory
     ```
 
 2. Set up anaconda environment including all dependencies:
